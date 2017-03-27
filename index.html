@@ -76,7 +76,9 @@
       }
 
       this.load = function (event) {
-        textarea.innerHTML = localStorage.getItem('writer');
+        var content = localStorage.getItem('writer');
+        if(content !== null)
+          textarea.innerHTML = localStorage.getItem('writer');
       }
 
       this.events = function (event) {
