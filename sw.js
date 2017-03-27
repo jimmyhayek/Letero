@@ -4,8 +4,7 @@ self.addEventListener('install', function(e) {
  e.waitUntil(
    caches.open('letero').then(function(cache) {
      return cache.addAll([
-       '/',
-       '/index.html'
+       'index.html'
      ]);
    })
  );
