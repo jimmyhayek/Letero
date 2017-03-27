@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Jakub Hájek">
+    <title>Writer</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="manifest.json">
+    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#101010">
+    <meta name="theme-color" content="#101010">
+    
+    <style>
+      body { background-color: #101010; color: #ffffff; }
+      main { width: 50%; margin: 10vh auto; }
+      textarea { background-color: #101010; color: #ffffff;  line-height: 1.6; border: none; resize: none; width: 100%; min-height: 75vh; overflow: hidden; }
+      textarea:focus { outline: none; }
+    </style>
+  </head>
+
+  <body>
+      <main role="main">
+        <textarea id="Editor" name="editor" autofocus></textarea>
+      </main>
+  </body>
+
+  <script>
+    function supportsLocalStorage() {
+      return typeof(Storage)!== 'undefined';
+    }
+    
+    var Writer = function (id) {
+      this.id = id;
+
+      var self = this;
+          textarea = document.getElementById(id),
+          events = ['change', 'cut', 'paste', 'drop', 'keydown'];
+        
+      this.init = function () {
+        this.load();
+        this.resize();
+        this.setEvents();
+      }
+
+      this.setEvents = function () {
+        for(var i = 0; i < events.length; i++)
+          textarea.addEventListener(events[i], this.events, false);
+      }
+
+  
+      this.resize = function () {
+        var delay;
+        delay = setTimeout(function() {
+          textarea.style.height = 'auto';
+          textarea.style.height = textarea.scrollHeight+'px';
+        }, 0);
+      }
+
+      this.save = function () {
+        var delay;
+        clearTimeout(delay);
+        try {
+          delay = setTimeout(function() {
+            localStorage.setItem('writer', textarea.value);
+          }, 1000);
+        } catch (e) {
+          if (e == QUOTA_EXCEEDED_ERR) {
+            alert('Quota exceeded!');
+          }
+        }
+      }
+
+      this.load = function (event) {
+        textarea.innerHTML = localStorage.getItem('writer');
+      }
+
+      this.events = function (event) {
+        self.resize(event);
+        self.save(event)
+      }
+
+      this.init();
+    }
+
+    new Writer('Editor');
+  </script>
+</html>
