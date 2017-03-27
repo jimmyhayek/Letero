@@ -24,6 +24,7 @@
        @media only screen and (min-width: 80em) {
         main { width: 50%; }
       }
+      label { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0 }
       textarea { background-color: #101010; color: #ffffff;  line-height: 1.6; border: none; resize: none; width: 100%; min-height: 75vh; overflow: hidden; }
       textarea:focus { outline: none; }
     </style>
@@ -31,7 +32,8 @@
 
   <body>
       <main role="main">
-        <textarea id="Editor" name="editor" autofocus></textarea>
+        <label for="Editor">Editor</label>
+        <textarea id="Editor" name="editor" placeholder="Type here&hellip;" autofocus></textarea>
       </main>
   </body>
 
@@ -58,7 +60,6 @@
           textarea.addEventListener(events[i], this.events, false);
       }
 
-  
       this.resize = function () {
         var delay;
         delay = setTimeout(function() {
